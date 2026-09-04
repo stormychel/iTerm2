@@ -98,6 +98,7 @@ static NSString * const kColorGalleryURL = @"https://www.iterm2.com/colorgallery
     IBOutlet NSButton *_useTabColor;
     IBOutlet NSButton *_useUnderlineColor;
     IBOutlet NSButton *_useSmartCursorColor;
+    IBOutlet NSButton *_hdrCursor;
     IBOutlet NSButton *_useThemeMarkColors;
     IBOutlet NSButton *_useActivePaneBorder;
     IBOutlet iTermSettingsColorWell *_activePaneBorderColor;
@@ -277,6 +278,11 @@ static NSString * const kColorGalleryURL = @"https://www.iterm2.com/colorgallery
                    relatedView:nil
                           type:kPreferenceInfoTypeCheckbox];
     info.observer = ^() { [weakSelf updateColorControlsEnabled]; };
+
+    [self defineControl:_hdrCursor
+                    key:KEY_HDR_CURSOR
+            relatedView:nil
+                   type:kPreferenceInfoTypeCheckbox];
 
     [self defineControl:_useThemeMarkColors
                     key:KEY_USE_THEME_MARK_COLORS

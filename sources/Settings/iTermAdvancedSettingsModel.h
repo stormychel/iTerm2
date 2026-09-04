@@ -32,6 +32,16 @@ typedef NS_ENUM(int, iTermOpenAnonymousTmuxWindowLocation) {
     iTermOpenAnonymousTmuxWindowLocationTopmostSessionWindow = 2,
 };
 
+// When the window name should appear beside the tabs in compact and minimal
+// themes, which have no title bar to put it in. Stored as the integer value of
+// +showWindowNameBesideTabs. The raw values are persisted in user defaults, so
+// do not renumber them.
+typedef NS_ENUM(int, iTermWindowNameBesideTabsMode) {
+    iTermWindowNameBesideTabsModeNever = 0,
+    iTermWindowNameBesideTabsModeWhenCustom = 1,
+    iTermWindowNameBesideTabsModeAlways = 2,
+};
+
 extern NSString *const kAdvancedSettingIdentifier;
 extern NSString *const kAdvancedSettingType;
 extern NSString *const kAdvancedSettingDefaultValue;
@@ -104,6 +114,7 @@ extern NSString *const iTermAdvancedSettingsDidChange;
 + (int)anonymousTmuxWindowsOpenInCurrentWindow;
 + (BOOL)appendToExistingDebugLog;
 + (BOOL)aquaSKKBugfixEnabled;
++ (BOOL)aiGeneratedTabTitles;
 + (BOOL)autoLockSessionNameOnEdit;
 + (int)autocompleteMaxOptions;
 + (BOOL)autodetectMouseReportingStuck;
@@ -261,7 +272,6 @@ extern NSString *const iTermAdvancedSettingsDidChange;
 + (NSString *)gitSearchPath;
 + (double)gitTimeout;
 + (void)setGitTimeout:(double)value;
-+ (BOOL)hdrCursor;
 + (BOOL)hideStuckTooltips;
 + (BOOL)highVisibility;
 + (double)horizontalScrollingSensitivity;
@@ -276,6 +286,7 @@ extern NSString *const iTermAdvancedSettingsDidChange;
 + (BOOL)includePasteHistoryInAdvancedPaste;
 + (BOOL)includeShortcutInWindowsMenu;
 + (BOOL)indicateBellsInDockBadgeLabel;
++ (BOOL)showSuiteNameInDockIcon;
 + (double)indicatorFlashInitialAlpha;
 + (BOOL)jiggleTTYSizeOnClearBuffer;
 + (BOOL)killJobsInServersOnQuit;
@@ -294,6 +305,7 @@ extern NSString *const iTermAdvancedSettingsDidChange;
 + (BOOL)logToSyslog;
 + (BOOL)aiChatVerboseConsoleLogging;
 + (BOOL)aiChatRawWireLogging;
++ (BOOL)logAITabTitleCorpus;
 + (BOOL)lowFiCombiningMarks;
 + (double)lowPowerModeFrameRate;
 + (BOOL)makeSomePowerlineSymbolsWide;
@@ -469,6 +481,7 @@ extern NSString *const iTermAdvancedSettingsDidChange;
 + (BOOL)showSecureKeyboardEntryIndicator;
 + (BOOL)showSessionRestoredBanner;
 + (BOOL)showURLPreviewForSemanticHistory;
++ (int)showWindowNameBesideTabs;
 + (BOOL)showWindowTitleWhenTabBarInvisible;
 + (BOOL)showYellowMarkForJobStoppedBySignal;
 + (BOOL)silentUserNotifications;

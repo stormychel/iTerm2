@@ -497,6 +497,7 @@ DEFINE_BOOL(jiggleTTYSizeOnClearBuffer, NO, SECTION_GENERAL @"Redraw the screen 
 DEFINE_BOOL(saveScrollBufferWhenClearing, YES, SECTION_GENERAL @"Save scroll buffer when clearing screen.\nWhen enabled, saves the current screen into scroll back buffer instead of clearing it.");
 DEFINE_BOOL(saveScrollbackWhenCursorMovesAbovePrompt, YES, SECTION_GENERAL @"Save the screen to scrollback when an app moves the cursor above the prompt.\nSome full-screen programs that don’t use the alternate screen buffer repaint by moving the cursor to the top of the screen and overwriting whatever was already there, destroying content you can still see. When enabled, iTerm2 first scrolls the visible screen into history so that content isn’t lost. Requires shell integration.");
 DEFINE_BOOL(indicateBellsInDockBadgeLabel, YES, SECTION_GENERAL @"Indicate the number of bells rung while the app is inactive in the dock icon’s badge label");
+DEFINE_BOOL(showSuiteNameInDockIcon, YES, SECTION_GENERAL @"Overlay the suite name on the dock icon when launched with -suite.\nWhen you run an isolated instance with the -suite argument, its name is drawn across the lower third of the dock icon so you can tell instances apart.");
 DEFINE_STRING(downloadsDirectory, @"", SECTION_GENERAL @"Downloads folder.\nIf set, downloaded files go to this location instead of the user’s $HOME/Downloads folder.");
 DEFINE_BOOL(noSyncSuppressDownloadConfirmation, NO, SECTION_GENERAL @"Suppress confirmation of terminal-initiated downloads?");
 DEFINE_STRING(viewManPageCommand, @"man %@ || sleep 3", SECTION_GENERAL @"Command to view man pages.\nUsed when you press the man page button on the touch bar. %@ is replaced with the command. End the command with & to avoid opening an iTerm2 window (e.g., if you're launching an external viewer).");
@@ -588,7 +589,6 @@ DEFINE_BOOL(underlineHyperlinks, YES, SECTION_DRAWING @"Underline OSC 8 hyperlin
 DEFINE_BOOL(solidUnderlines, NO, SECTION_DRAWING @"Use solid underlines?\nWhen disabled, underlines break near text that would intersect them.");
 DEFINE_BOOL(useMultiPassUnderlineRenderer, YES, SECTION_DRAWING @"Use multi-pass underline renderer?\nFixes underline gaps with ligature fonts. Requires restart.");
 DEFINE_SETTABLE_BOOL(showMetalFPSmeter, ShowMetalFPSmeter, NO, SECTION_DRAWING @"Show FPS meter\nRequires Metal renderer");
-DEFINE_BOOL(hdrCursor, NO, SECTION_DRAWING @"HDR cursor\nExperimental. Half-baked. Probably don't use this.");
 DEFINE_FLOAT(metalRedrawPeriod, 0.5, SECTION_DRAWING @"GPU renderer redraws at least this often, in seconds.\nThis is to work around a problem where the GPU renderer encounters a lot of latency when drawing for the first time after a short period of inactivity. Set this to a big number to render it ineffectual.");
 DEFINE_BOOL(animateGraphStatusBarComponents, YES, SECTION_DRAWING @"Animate graph-based status bar components?\nTurn this off to reduce CPU/GPU usage in WindowServer.");
 DEFINE_BOOL(disableTopRightIndicators, NO, SECTION_DRAWING @"Disable indicator icons that appear in the top right of a session?\nThis includes the following indicators: maximized pane, broadcast input, coprocess running, alert on next mark, output suppression, zoom, copy mode, and debug logging.");
@@ -640,6 +640,7 @@ DEFINE_BOOL(logForegroundJobAncestryDiagnostics, NO, SECTION_DEBUGGING @"Log a d
 DEFINE_STRING(fakeFullyQualifiedDomainName, @"", SECTION_DEBUGGING @"Override the local hostname used for localhost detection.\nWhen non-empty, the app behaves as though [NSHost fullyQualifiedDomainName] returns this value. Lets you test how localhost detection reacts to a hostname change without actually renaming your computer. Affects hosts reported after you change it; leave empty to use the real hostname.");
 DEFINE_BOOL(aiChatVerboseConsoleLogging, NO, SECTION_DEBUGGING @"Log AI chat traffic to the system console.\nEmits per-turn user / agent / tool entries via NSFuckingLog so you can trace exactly what the agent received and produced. Useful for debugging tool dispatch and history translation. Off by default; turn on only while reproducing an issue.");
 DEFINE_BOOL(aiChatRawWireLogging, NO, SECTION_DEBUGGING @"Log raw AI API requests and responses to disk.\nWrites every byte sent to and received from the AI vendor (full request headers, body, streaming chunks, final response, errors, and timing) to ~/Library/Application Support/iTerm2/AIChatWire/. One log file per app launch; rotate or delete it yourself when done. WARNING: the log captures Authorization / API-key headers and full prompt + response content verbatim. Off by default; turn on only while reproducing an issue and delete the files when finished.");
+DEFINE_BOOL(logAITabTitleCorpus, NO, SECTION_DEBUGGING @"Log AI tab-title generations to a corpus file.\nWhen the AI tab-title component runs the on-device model, append the inputs (foreground job, command line, directory, host, and visible screen), the system prompt used, the model, the generated title, and timing as one JSON line to ~/Library/Application Support/iTerm2/AITabTitleCorpus/corpus.jsonl. Builds a replayable corpus for grading prompts and models offline (see the corpus grader in the AI live harness). WARNING: captures full screen contents verbatim. Off by default; turn on only while collecting data and delete the file when finished.");
 #if DEBUG
 DEFINE_STRING(alternateSSHIntegrationScript, @"", SECTION_DEBUGGING @"Alternate SSH integration python script");
 #endif
@@ -664,6 +665,7 @@ DEFINE_BOOL(NoSyncSuppressRestartSessionConfirmationAlert, NO, SECTION_SESSION @
 DEFINE_BOOL(showAutomaticProfileSwitchingBanner, YES, SECTION_SESSION @"Show a “Switched to profile” message when Automatic Profile Switching activates.");
 DEFINE_BOOL(preserveFontSizeOnAutomaticProfileSwitch, YES, SECTION_SESSION @"Preserve font zoom level when Automatic Profile Switching changes profiles.");
 DEFINE_BOOL(autoLockSessionNameOnEdit, YES, SECTION_SESSION @"Auto-lock session name after editing it.");
+DEFINE_BOOL(aiGeneratedTabTitles, NO, SECTION_SESSION @"Name tabs after the work on screen, using on-device AI?\nWhen enabled, the session variable “aiTitle” holds a short name for the task visible in the session, which you can show by adding the “AI-generated name” title component or using \\(session.aiTitle) in a custom title format. Requires Apple Intelligence; the screen contents never leave this Mac, and no API key is used.");
 DEFINE_FLOAT(timeoutForDaemonAttachment, 10, SECTION_SESSION @"How long to wait when trying to attach to an iTerm daemon at startup when restoring windows (in seconds)?");
 DEFINE_BOOL(logTimestampsWithPlainText, YES, SECTION_SESSION @"When logging plain text, include timestamps for each line?");
 DEFINE_STRING(composerClearSequence, @"0x15 0x0b", SECTION_SESSION @"Hex codes to send to clear the command line when entering the composer.\n0x15 is ^U, 0x0b is ^K.");
@@ -697,6 +699,7 @@ DEFINE_FLOAT(compactTabBarStoplightButtonsWidth, 75, SECTION_WINDOWS @"Width (in
 DEFINE_BOOL(workAroundMultiDisplayOSBug, YES, SECTION_WINDOWS @"Work around a macOS bug where the OS moves windows to the first display for no good reason.");
 DEFINE_BOOL(disableDocumentedEditedIndicator, NO, SECTION_WINDOWS @"Disable documented edited indicator (black dot in close button)");
 DEFINE_BOOL(showWindowTitleWhenTabBarInvisible, YES, SECTION_WINDOWS @"Show window title when the tab bar is not visible?\nWhen disabled, the tab's title will be shown where the window title would normally go.");
+DEFINE_INT_ENUM(showWindowNameBesideTabs, iTermWindowNameBesideTabsModeWhenCustom, (@[ @"Never", @"When a custom name is set", @"Always" ]), SECTION_WINDOWS @"Show the window name beside the tabs in the Compact and Minimal themes?\nThose themes have no title bar, so the window name is otherwise only visible when the tab bar is hidden. “When a custom name is set” (the default) shows it only after you name the window with Window > Edit Window Title, leaving windows you have not named unchanged. “Always” also shows the automatic title. This has no effect in themes that have a title bar.");
 DEFINE_BOOL(squareWindowCorners, NO, SECTION_WINDOWS @"Windows have square corners.\nThis is only for users who have already hacked macOS to remove rounded corners. You must restart iTerm2 after changing this setting for it to take effect.");
 DEFINE_STRING(windowBorderColor, @"", SECTION_WINDOWS @"Border color for focused windows.\nShould be a web-style color, #rrggbb, or #rrggbbaa to also set opacity. You can also use p3#rrggbb or p3#rrggbbaa for p3 color space. Without an alpha component the border is drawn at 75% opacity. Requires “Show border around windows” with no title bar. Leave empty for the default color.");
 DEFINE_STRING(windowBorderColorUnfocused, @"", SECTION_WINDOWS @"Border color for unfocused windows.\nShould be a web-style color, #rrggbb, or #rrggbbaa to also set opacity. You can also use p3#rrggbb or p3#rrggbbaa for p3 color space. Without an alpha component the border is drawn at 75% opacity. Leave empty to match the focused color.");
@@ -1008,6 +1011,7 @@ DEFINE_SETTABLE_BOOL(setIT2AppPath, SetIT2AppPath, NO, SECTION_SCRIPTING @"Set I
                 }];
             }
         }];
+
         [self updateSettingsForUnitTestsIfNeeded];
     }
 }

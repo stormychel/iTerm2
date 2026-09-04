@@ -15,6 +15,7 @@
 #import "iTermSplitViewAnimation.h"
 #import "iTermBijection.h"
 #import "iTermBuiltInFunctions.h"
+#import "iTermCursor.h"
 #import "iTermCache.h"
 #import "iTermColorMap.h"
 #import "iTermCommandRunner.h"
@@ -281,3 +282,5 @@
 #import "iTermSessionPreviewPanel.h"
 #import "iTermMinimalComposerViewController.h"
 #import <CoreParse/CoreParse.h>
+#import "iTermTabTitleFrameFingerprint.h"
+#import "iTermSessionTitleBuiltInFunction.h"

@@ -456,6 +456,16 @@ Triggers Improvements:
   advanced setting extends it to battery.
 
 AI Improvements:
+- iTerm2 can now name a tab after the work visible
+  in its session, generated on-device by Apple
+  Intelligence. It is off by default; turn on
+  “Name tabs after the work on screen, using
+  on-device AI” in Advanced Settings, then add the
+  “AI-generated name” title component to a profile
+  (or use \(session.aiTitle) in a custom title
+  format). The screen contents never leave your
+  Mac and no API key is used. Requires Apple
+  Intelligence.
 - You can now press Cmd-F in an AI chat to search
   the current conversation. A find bar appears at
   the top with match counts and next/previous
@@ -865,6 +875,12 @@ Bug Fixes:
   screen with “Hide tab bar when there is only
   one tab” enabled, which left an unused strip
   at the bottom of the window.
+- New per-profile “Use HDR cursor when
+  available” setting (Profiles > Colors). When
+  on, a white cursor renders brighter than white
+  on an HDR-capable display, with either the GPU
+  or the legacy renderer. Only sessions that
+  enable it pay the extra fp16 cost.
 - In the tmux Dashboard, “Open in Tabs” is now
   enabled when a single hidden window is
   selected, matching “Open in Window.” Issue
@@ -2760,6 +2776,7 @@ Bug Fixes:
   so arbitrary statuses from any tool just work.
   Window/tab/session rows also carry the matching
   macwindow / folder / terminal icon.
+
 - Parentheses, brackets, and other mirrored
   punctuation now draw correctly in right-to-
   left text when right-to-left support is on.
@@ -2830,6 +2847,22 @@ Bug Fixes:
   pieces in reading order instead of stacking
   them on separate lines. Pieces on different
   lines still copy with line breaks.
+- Fixed a bug where the Keys > General tab in
+  the Edit Session window could appear empty
+  for a terminal session after editing a
+  browser session, because previously hidden
+  controls were not restored.
+- The it2 command-line tool can now send a push
+  notification to your paired companion device
+  with “it2 notify «title» «body»”.
+- The window name can now appear beside the tabs
+  in the Compact and Minimal themes, which have
+  no title bar to show it in. By default it
+  appears only once you name a window with
+  Window > Edit Window Title, so windows you have
+  not named look exactly as before. The advanced
+  setting “Show the window name beside the
+  tabs” can turn it off or always show it.
 - With the tab bar on the left or right, the tab
   and tab group context menus now say “New Tab
   Below” and “Close Tabs Below” instead of “to
